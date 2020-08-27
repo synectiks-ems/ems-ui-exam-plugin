@@ -1,4 +1,4 @@
-const IP = 'localhost';
+const IP = '100.81.5.26';
 const graphqlUrl = 'http://' + IP + ':9096';
 const loggedInUserUrl = 'http://' + IP + ':3000';
 const webSockWithCmsBackendUrl = 'ws://' + IP + ':4000/websocket/tracker/websocket';
