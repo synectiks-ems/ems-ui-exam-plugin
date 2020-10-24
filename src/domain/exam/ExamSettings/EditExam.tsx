@@ -753,7 +753,7 @@ class EditExam<T = {[data: string]: any}> extends React.Component<EditExamProps,
           });
           
         }).catch((error: any) => {
-          alert("Due to some error Exam could not be updated");
+          // alert("Due to some error Exam could not be updated");
           console.log('there was an error sending the update Exam mutation result', error);
           return Promise.reject(`Could not retrieve update Exam data: ${error}`);
         });
