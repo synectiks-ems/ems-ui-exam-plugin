@@ -9,4 +9,4 @@ export {GET_BATCH_LIST} from './getBatchList';
 export {GET_SECTION_LIST} from './getSectionList';
 export {TYPE_OF_GRADINGS} from './TypeOfGradings';
 export {ADD_TYPE_OF_GRADING} from './AddTypeOfGrading';
-export {ACEXAMLIST} from './AcExamSetting';
+export {UPDATE_EXAM_SETTING} from './UpdateAcademicExamSetting';

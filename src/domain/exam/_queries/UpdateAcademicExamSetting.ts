@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-export const ADD_EXAM_SETTING = gql`
-  mutation addAcademicExamSetting($input: [AddAcademicExamSettingInput!]!) {
-    addAcademicExamSetting(input: $input) {
+export const UPDATE_EXAM_SETTING = gql`
+  mutation updateAcademicExamSetting($input: UpdateAcademicExamSettingInput) {
+    updateAcademicExamSetting(input: $input) {
       cmsAcademicExamSettingVo {
         id
         examName
@@ -13,10 +13,12 @@ export const ADD_EXAM_SETTING = gql`
         total
         passing
         actions
-
+        countValue
+        groupValue
         departmentId
         sectionId
-
+        strexamDate
+        examDate
         subjectId
         academicyearId
         batchId

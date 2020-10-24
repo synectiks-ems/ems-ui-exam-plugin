@@ -5,11 +5,14 @@ import {graphql, QueryProps, compose, withApollo} from 'react-apollo';
 import {AcExamSettingListQuery} from '../../types';
 import {NavItem,NavLink, TabPane, TabContent} from 'reactstrap';
 import ExamDetailsPage from './ExamDetailsPage';
+import EditExam from './EditExam';
 import '../../../css/dark.css';
 import * as AcExamSettingListQueryGql from './AcExamSettingListQuery.graphql';
 import withLoadingHandler from '../../../components/withLoadingHandler';
 import {GET_EXAM_DATA,CREATE_FILTER_DATA_CACHE} from '../_queries';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
+// import EditEx from './EditEx';
+// import UpdateExam from './UpdateExam';
 
 
 const w140 = {
@@ -30,9 +33,10 @@ type ExamTableStates = {
   academicYearId: any;
   departmentId: any;
   createExamFilterDataCache: any;
+  typesOfGradingList?: any;
   user: any;
   activeTab: any;
-  examObj: any;
+  ExObj: any;
 };
 
 export interface ExamProps extends React.HTMLAttributes<HTMLElement> {
@@ -47,9 +51,10 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
     const params = new URLSearchParams(location.search);
     this.state = {
       activeTab: 0,
-      examObj: {},
+      ExObj: {},
       user: this.props.user,
       createExamFilterDataCache: this.props.createExamFilterDataCache,
+      typesOfGradingList: this.props.typesOfGradingList,
       branchId: null,
       academicYearId: null,
       departmentId: null,
@@ -200,6 +205,12 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
     });
   }
 
+  async getStDetail(obj: any, e: any) {
+    await this.SetObject(obj);
+    console.log('3. data in ExObj:', this.state.ExObj);
+    await this.toggleTab(2);
+  }
+
   onClickCheckbox(index: any, e: any) {
     // const { target } = e;
     const {id} = e.nativeEvent.target;
@@ -277,6 +288,15 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
                 <td>{exam.strexamDate}</td>
                 <td>{exam.startTime}</td>
                 <td>{exam.endTime}</td>
+                <td>
+                <button
+                    className="btn btn-primary"
+                    onClick={(e: any) => this.getStDetail(exam, e)}
+                  >
+                    {' '}
+                    Edit{' '}
+                  </button>
+                  </td>
               </tr>
             );
             console.log('print exam obj:', exam);
@@ -325,7 +345,15 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
                 <td>{exam.strexamDate}</td>
                 <td>{exam.startTime}</td>
                 <td>{exam.endTime}</td>
-              
+                <td>
+                <button
+                    className="btn btn-primary"
+                    onClick={(e: any) => this.getStDetail(exam, e)}
+                  >
+                    {' '}
+                    Edit{' '}
+                  </button>
+                  </td>
             </tr>
           );
           console.log('print exam obj:', exam);
@@ -379,14 +407,14 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
 
   async showDetail(obj: any, e: any) {
     await this.SetObject(obj);
-    console.log('3. data in examObj:', this.state.examObj);
+    console.log('3. data in Exbj:', this.state.ExObj);
     await this.toggleTab(1);
   }
 
   async SetObject(obj: any) {
     console.log('1. setting object :', obj);
     await this.setState({
-      examObj: obj,
+      ExObj: obj,
     });
     console.log('2. data in obj:', obj);
   }
@@ -436,6 +464,7 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
     const { examData,
       createExamFilterDataCache,
       departmentId,
+      typesOfGradingList,
       activeTab,
       user,} = this.state;
     return (
@@ -541,7 +570,7 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
                     <th>Date</th>
                     <th>Start Time</th>
                     <th>End Time</th>
-                    
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -579,13 +608,46 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
                   </a>
                 </div>
               </div>
-              {this.state.examObj !== null && this.state.examObj !== undefined && (
-                <ExamDetailsPage data={this.state.examObj} />
+              {this.state.ExObj !== null && this.state.ExObj !== undefined && (
+                <ExamDetailsPage data={this.state.ExObj} />
               )}
             </div>
             
           </TabPane>
-       
+          <TabPane tabId={2}>
+            <div className="container-fluid" style={{padding: '0px'}}>
+              <div className="m-b-1 bg-heading-bgStudent studentListFlex p-point5">
+                <div className="">
+                  <h4 className="ptl-06">Student Details</h4>
+                </div>
+                <div className="">
+                  <a
+                    className="btn btn-primary m-l-1"
+                    onClick={() => {
+                      this.toggleTab(1);
+                    }}
+                  >
+                    Back
+                  </a>
+                </div>
+              </div>
+              {user !== null &&
+                this.state.ExObj !== null &&
+                this.state.ExObj !== undefined && (
+                  <EditExam
+                    user={user}
+                    data={this.state.ExObj}
+                    ExObj={this.state.ExObj}
+                    batches={this.state.createExamFilterDataCache.batches}
+                    sections={this.state.createExamFilterDataCache.sections}
+                    subjects={this.state.createExamFilterDataCache.subjects}
+                    semesters={this.state.createExamFilterDataCache.semesters}
+                    typesOfGradingList={typesOfGradingList}
+                  />
+                )}
+              {/*  */}
+            </div>
+          </TabPane>
       </TabContent>
     </section>
   );

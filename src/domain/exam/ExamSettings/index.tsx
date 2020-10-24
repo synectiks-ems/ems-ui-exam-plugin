@@ -12,7 +12,7 @@ import {
   // GET_SECTION_LIST,
   CREATE_FILTER_DATA_CACHE,
   GET_EXAM_DATA,
-  ACEXAMLIST,
+  // ACEXAMLIST,
   TYPE_OF_GRADINGS,
 } from '../_queries';
 import MarkSubjectExam from './MarkSubjectExam';
@@ -43,7 +43,7 @@ class ExamSettings extends React.Component<ExamSettingsProps, any> {
     };
     this.registerSocket = this.registerSocket.bind(this);
     this.toggleTab = this.toggleTab.bind(this);
-    this.acExamSettings = this.acExamSettings.bind(this);
+    // this.acExamSettings = this.acExamSettings.bind(this);
     this.getExamFilterCache = this.getExamFilterCache.bind(this);
     this.getTypesOfGrading = this.getTypesOfGrading.bind(this);
     // this.getDepartmentList = this.getDepartmentList.bind(this);
@@ -53,7 +53,7 @@ class ExamSettings extends React.Component<ExamSettingsProps, any> {
 
   async componentDidMount(){
     await this.registerSocket();
-    await this.acExamSettings();
+    // await this.acExamSettings();
     await this.getExamFilterCache();
     await this.getTypesOfGrading();
   }
@@ -96,6 +96,7 @@ class ExamSettings extends React.Component<ExamSettingsProps, any> {
     }
     if (tabNo === 1) {
       this.getExamFilterCache();
+      this.getTypesOfGrading();
     }
     if (tabNo === 2) {
       this.getExamFilterCache();
@@ -108,15 +109,15 @@ class ExamSettings extends React.Component<ExamSettingsProps, any> {
     });
   }
 
-  async acExamSettings() {
-    const {data} = await this.props.client.query({
-      query: ACEXAMLIST,
-      fetchPolicy: 'no-cache',
-    });
-    this.setState({
-      examList: data,
-    });
-  }
+  // async acExamSettings() {
+  //   const {data} = await this.props.client.query({
+  //     query: ACEXAMLIST,
+  //     fetchPolicy: 'no-cache',
+  //   });
+  //   this.setState({
+  //     examList: data,
+  //   });
+  // }
 
   async getExamFilterCache() {
     const {branchId, academicYearId, departmentId} = this.state;
@@ -246,12 +247,13 @@ class ExamSettings extends React.Component<ExamSettingsProps, any> {
           </TabPane>
           
           <TabPane tabId={1}>
-          {user !== null && createExamFilterDataCache !== null && (
+          {user !== null && createExamFilterDataCache !== null && typesOfGradingList !== null && (
               <ExamGrid
                 user={user}
                 createExamFilterDataCache={
                   createExamFilterDataCache.createExamFilterDataCache
                 }
+                typesOfGradingList={typesOfGradingList.typeOfGradings}
               />
             )}
           </TabPane>
