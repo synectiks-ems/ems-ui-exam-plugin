@@ -136,6 +136,7 @@ class MarkSubjectExam<T = {[data: string]: any}> extends React.Component<MarkSub
       dateofExam: '',
       isSubjectSame: false,
       examData: {
+        examName: "",
         // branch: {
         //   id: 1951,
         //   //1851 1001
@@ -586,11 +587,11 @@ class MarkSubjectExam<T = {[data: string]: any}> extends React.Component<MarkSub
     const {examData, branchId, academicYearId, departmentId} = this.state;
     e.preventDefault();
 
-    let txtEsNm: any = document.querySelector('#examName');
-    if (txtEsNm.value.trim() === '') {
-      alert('Please provide an Exam Name');
-      return;
-    }
+    // let txtEsNm: any = document.querySelector('#examName');
+    // if (txtEsNm.value.trim() === '') {
+    //   alert('Please provide an Exam Name');
+    //   return;
+    // }
 
     let allSubOpts: any = document.querySelectorAll('#subject');
     let isSubNotSelected = false;
@@ -681,7 +682,8 @@ class MarkSubjectExam<T = {[data: string]: any}> extends React.Component<MarkSub
       let subOptions: any = document.querySelector('#subject' + x);
       for (let i = 0; i < this.state.noOfExams; i++) {
         let sd = new SaData(
-          txtEsNm.value.trim(),
+          // txtEsNm.value.trim(),
+          examData.examName,
           examData.exmDate['examDate' + i],
           examData.exmStTime['startTime' + i],
           examData.exmNdTime['endTime' + i],
@@ -922,7 +924,7 @@ class MarkSubjectExam<T = {[data: string]: any}> extends React.Component<MarkSub
 
             <div className="hide" id="detailGridTable">
               <div className="tflex bg-heading mt-1 e-flex" id="detailGrid">
-                <h4 className="p-1 py-2 mb-0"> Exam Name:  <input type="text" id="examName" name="examName"  value={examData.examName} className="h-input m-1" maxLength={300} /></h4>
+                <h4 className="p-1 py-2 mb-0"> Exam Name:  <input type="text" id="examName" name="examName"  value={examData.examName} onChange={this.onChange} className="h-input m-1" maxLength={300} /></h4>
                 <div className="hhflex" />
               </div>
               <table className="fwidth">

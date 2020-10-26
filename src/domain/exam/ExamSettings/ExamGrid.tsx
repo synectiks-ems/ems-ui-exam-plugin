@@ -618,7 +618,7 @@ class ExamGrid extends React.Component<ExamProps, ExamTableStates> {
             <div className="container-fluid" style={{padding: '0px'}}>
               <div className="m-b-1 bg-heading-bgStudent studentListFlex p-point5">
                 <div className="">
-                  <h4 className="ptl-06">Student Details</h4>
+                  <h4 className="ptl-06">Edit Exam</h4>
                 </div>
                 <div className="">
                   <a
